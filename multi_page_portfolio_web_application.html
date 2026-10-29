@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mohamud Dahir | Personal Portfolio</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts (Inter) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-primary: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --primary-accent: #3b82f6;
+            --primary-hover: #1d4ed8;
+            --nav-bg: rgba(255, 255, 255, 0.95);
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #0f172a;
+            --bg-card: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+            --primary-accent: #60a5fa;
+            --primary-hover: #3b82f6;
+            --nav-bg: rgba(15, 23, 42, 0.95);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            transition: background-color 0.3s ease, color 0.3s ease;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Navigation */
+        .navbar {
+            background-color: var(--nav-bg);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .nav-link {
+            color: var(--text-main) !important;
+            font-weight: 500;
+            padding: 0.5rem 1rem !important;
+            border-radius: 0.5rem;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .nav-link:hover, 
+        .nav-link.active {
+            color: var(--primary-accent) !important;
+            background-color: rgba(59, 130, 246, 0.1);
+        }
+
+        /* Single Page Application Tab Switching */
+        .page-section {
+            display: none;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        .page-section.active-page {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Cards & Surfaces */
+        .custom-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .custom-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Hero Banner */
+        .hero-banner {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(147, 51, 234, 0.15) 100%);
+            border-radius: 1.5rem;
+            padding: 4rem 2rem;
+            border: 1px solid var(--border-color);
+        }
+
+        /* Skills Progress */
+        .progress {
+            background-color: var(--border-color);
+            height: 0.8rem;
+            border-radius: 1rem;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            border-radius: 1rem;
+        }
+
+        /* Gallery Overlay */
+        .gallery-img-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 0.75rem;
+            aspect-ratio: 4/3;
+            cursor: pointer;
+        }
+
+        .gallery-img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .gallery-img-container:hover img {
+            transform: scale(1.06);
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            color: #ffffff;
+        }
+
+        .gallery-img-container:hover .gallery-overlay {
+            opacity: 1;
+        }
+
+        /* Theme Switcher */
+        .theme-toggle {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .theme-toggle:hover {
+            background-color: rgba(59, 130, 246, 0.1);
+        }
+
+        /* Responsive Map Container */
+        .map-responsive {
+            overflow: hidden;
+            padding-bottom: 56.25%;
+            position: relative;
+            height: 0;
+            border-radius: 1rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .map-responsive iframe {
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 100%;
+            position: absolute;
+        }
+
+        /* Footer */
+        footer {
+            margin-top: auto;
+            background-color: var(--bg-card);
+            border-top: 1px solid var(--border-color);
+        }
+    </style>
+</head>
+<body data-theme="light">
+
+    <!-- Sticky Navigation Header -->
+    <nav class="navbar navbar-expand-lg sticky-top py-3">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center gap-2 fw-bold" onclick="navigateTo('home-page')">
+                <span class="bg-primary text-white px-3 py-1 rounded-3 fw-bold">MD</span>
+                <span class="fs-4 fw-bold tracking-tight text-main">Mohamud Dahir</span>
+            </a>
+            
+            <div class="d-flex align-items-center gap-2 order-lg-3">
+                <button class="theme-toggle" id="themeToggleBtn" aria-label="Toggle Theme">
+                    <i class="fa-solid fa-moon" id="themeIcon"></i>
+                </button>
+                <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <i class="fa-solid fa-bars fs-4 text-main"></i>
+                </button>
+            </div>
+
+            <div class="collapse navbar-collapse justify-content-center order-lg-2" id="navbarNav">
+                <ul class="navbar-nav gap-1 mt-3 mt-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="nav-home-page" onclick="navigateTo('home-page')">
+                            <i class="fa-solid fa-house me-1"></i> Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="nav-about-page" onclick="navigateTo('about-page')">
+                            <i class="fa-solid fa-user me-1"></i> About Me
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="nav-gallery-page" onclick="navigateTo('gallery-page')">
+                            <i class="fa-solid fa-photo-film me-1"></i> Gallery
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="nav-contact-page" onclick="navigateTo('contact-page')">
+                            <i class="fa-solid fa-envelope me-1"></i> Contact
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Dynamic Container -->
+    <main class="container my-4 my-md-5 flex-grow-1">
+
+        <!-- ================= PAGE 1: HOME PAGE ================= -->
+        <section id="home-page" class="page-section active-page">
+            <div class="hero-banner text-center text-lg-start mb-5">
+                <div class="row align-items-center gy-4">
+                    <div class="col-lg-7">
+                        <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-3 py-2 rounded-pill mb-3 fw-semibold">
+                            <i class="fa-solid fa-graduation-cap me-1"></i> Software Engineering Student
+                        </span>
+                        <h1 class="display-4 fw-bold mb-3">Crafting Scalable & User-Centric Digital Experiences</h1>
+                        <p class="lead text-muted mb-4">
+                            Welcome to my personal showcase! I am a passionate developer focused on building modern web applications, clean responsive interfaces, and accessible software solutions.
+                        </p>
+                        <div class="d-flex flex-wrap gap-3 justify-content-center justify-content-lg-start">
+                            <button onclick="navigateTo('about-page')" class="btn btn-primary btn-lg rounded-pill px-4 py-2">
+                                Learn More About Me <i class="fa-solid fa-arrow-right ms-2"></i>
+                            </button>
+                            <button onclick="navigateTo('contact-page')" class="btn btn-outline-secondary btn-lg rounded-pill px-4 py-2">
+                                Get In Touch
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-lg-5 text-center">
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80" 
+                             alt="Mohamud Dahir Professional Headshot" 
+                             class="rounded-circle shadow-lg img-fluid border border-4 border-white" 
+                             style="max-width: 270px; aspect-ratio: 1; object-fit: cover;">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Highlights Section -->
+            <div class="mb-4">
+                <h3 class="fw-bold mb-4"><i class="fa-solid fa-bolt text-warning me-2"></i> Quick Highlights</h3>
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <div class="custom-card p-4 h-100">
+                            <div class="bg-primary-subtle text-primary p-3 rounded-3 d-inline-block mb-3">
+                                <i class="fa-solid fa-code fs-3"></i>
+                            </div>
+                            <h4 class="fw-bold fs-5">Core Technical Stack</h4>
+                            <p class="text-muted small">Proficient in HTML5, CSS3, JavaScript (ES6+), Bootstrap 5, Git version control, and responsive UI architecture.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="custom-card p-4 h-100">
+                            <div class="bg-success-subtle text-success p-3 rounded-3 d-inline-block mb-3">
+                                <i class="fa-solid fa-laptop-code fs-3"></i>
+                            </div>
+                            <h4 class="fw-bold fs-5">Program of Study</h4>
+                            <p class="text-muted small">Currently pursuing a B.S. in Computer Science & Software Engineering with a strong foundation in Algorithms & Object-Oriented Programming.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="custom-card p-4 h-100">
+                            <div class="bg-purple-subtle text-purple p-3 rounded-3 d-inline-block mb-3" style="background-color: #f3e8ff; color: #9333ea;">
+                                <i class="fa-solid fa-trophy fs-3"></i>
+                            </div>
+                            <h4 class="fw-bold fs-5">Key Achievements</h4>
+                            <p class="text-muted small">Hackathon finalist, active open-source contributor, and lead developer on multiple academic web software projects.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PAGE 2: ABOUT ME ================= -->
+        <section id="about-page" class="page-section">
+            <div class="text-center mb-5">
+                <h2 class="display-5 fw-bold mb-2">Who You Are / About Me</h2>
+                <p class="text-muted">A detailed overview of my academic background, technical skills, and personal interests.</p>
+            </div>
+
+            <!-- Biography Card -->
+            <div class="custom-card p-4 p-md-5 mb-5">
+                <div class="row align-items-center g-4">
+                    <div class="col-lg-8">
+                        <h3 class="fw-bold mb-3"><i class="fa-solid fa-user-gear text-primary me-2"></i> Biography & Profile Summary</h3>
+                        <p class="text-muted">
+                            Hello! I am <strong>Mohamud Dahir</strong>, an ambitious Computer Science student passionate about software engineering and intuitive user experience design. My interest in technology began with solving logical problems and creating accessible websites.
+                        </p>
+                        <p class="text-muted mb-0">
+                            Over the course of my degree program, I have mastered key principles of front-end web engineering, software architecture, and Git-based collaborative development. My goal is to work on innovative digital platforms that empower users globally.
+                        </p>
+                    </div>
+                    <div class="col-lg-4 text-center">
+                        <div class="p-4 bg-body-tertiary rounded-4 border">
+                            <i class="fa-solid fa-compass text-primary display-4 mb-3"></i>
+                            <h5 class="fw-bold">My Career Objective</h5>
+                            <p class="small text-muted mb-0">"To design and deploy clean, maintainable, and highly responsive software products."</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Education & Academic Table -->
+            <div class="mb-5">
+                <h3 class="fw-bold mb-4"><i class="fa-solid fa-book-bookmark text-primary me-2"></i> Education & Academic Background</h3>
+                <div class="custom-card p-3 p-md-4 table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead>
+                            <tr class="table-light">
+                                <th>Degree / Qualification</th>
+                                <th>University / Institution</th>
+                                <th>Year / Status</th>
+                                <th>Key Coursework</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="fw-semibold">B.S. Software Engineering</span></td>
+                                <td>State University of Technology</td>
+                                <td>2023 - Present</td>
+                                <td>Data Structures, Web Tech, OOP, Database Systems</td>
+                            </tr>
+                            <tr>
+                                <td><span class="fw-semibold">Front-End Developer Cert.</span></td>
+                                <td>Tech Academy Online</td>
+                                <td>2022 - 2023</td>
+                                <td>HTML5, CSS3, JavaScript ES6+, Bootstrap 5, Git</td>
+                            </tr>
+                            <tr>
+                                <td><span class="fw-semibold">High School Diploma</span></td>
+                                <td>Oakridge High School</td>
+                                <td>2018 - 2022</td>
+                                <td>Computer Science, Mathematics, Robotics Club</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Skills & Competencies -->
+            <div class="row g-4 mb-5">
+                <div class="col-lg-6">
+                    <div class="custom-card p-4 h-100">
+                        <h3 class="fw-bold fs-5 mb-4"><i class="fa-solid fa-code text-primary me-2"></i> Technical Skills</h3>
+                        
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between mb-1">
+                                <span class="fw-medium">HTML5 & Semantic Structure</span>
+                                <span class="text-muted">95%</span>
+                            </div>
+                            <div class="progress"><div class="progress-bar" style="width: 95%;"></div></div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between mb-1">
+                                <span class="fw-medium">CSS3 & Bootstrap 5 Styling</span>
+                                <span class="text-muted">90%</span>
+                            </div>
+                            <div class="progress"><div class="progress-bar" style="width: 90%;"></div></div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between mb-1">
+                                <span class="fw-medium">JavaScript & DOM Interactions</span>
+                                <span class="text-muted">85%</span>
+                            </div>
+                            <div class="progress"><div class="progress-bar" style="width: 85%;"></div></div>
+                        </div>
+
+                        <div class="mb-0">
+                            <div class="d-flex justify-content-between mb-1">
+                                <span class="fw-medium">Git & GitHub Hosting</span>
+                                <span class="text-muted">88%</span>
+                            </div>
+                            <div class="progress"><div class="progress-bar" style="width: 88%;"></div></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="custom-card p-4 h-100">
+                        <h3 class="fw-bold fs-5 mb-4"><i class="fa-solid fa-heart text-danger me-2"></i> Soft Skills & Hobbies</h3>
+                        <div class="d-flex flex-wrap gap-2 mb-4">
+                            <span class="badge bg-primary-subtle text-primary p-2 fs-6"><i class="fa-solid fa-users me-1"></i> Team Leadership</span>
+                            <span class="badge bg-success-subtle text-success p-2 fs-6"><i class="fa-solid fa-lightbulb me-1"></i> Problem Solving</span>
+                            <span class="badge bg-warning-subtle text-warning p-2 fs-6"><i class="fa-solid fa-clock me-1"></i> Time Management</span>
+                        </div>
+
+                        <h5 class="fw-bold fs-6 mb-2">Interests Outside the Classroom</h5>
+                        <ul class="text-muted list-unstyled">
+                            <li class="mb-2"><i class="fa-solid fa-circle-check text-success me-2"></i> <strong>Open Source Development:</strong> Exploring developer tools and tutorials.</li>
+                            <li class="mb-2"><i class="fa-solid fa-circle-check text-success me-2"></i> <strong>Tech Blogging:</strong> Writing guides on frontend development best practices.</li>
+                            <li class="mb-2"><i class="fa-solid fa-circle-check text-success me-2"></i> <strong>Photography:</strong> Capturing architectural landscapes and campus events.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PAGE 3: GALLERY ================= -->
+        <section id="gallery-page" class="page-section">
+            <div class="text-center mb-5">
+                <h2 class="display-5 fw-bold mb-2">Multimedia & Gallery Showcase</h2>
+                <p class="text-muted">Watch my self-motivation degree pitch video and browse project photography.</p>
+            </div>
+
+            <!-- Video Section -->
+            <div class="custom-card p-4 p-md-5 mb-5">
+                <div class="row align-items-center g-4">
+                    <div class="col-lg-6">
+                        <span class="badge bg-danger-subtle text-danger mb-2 px-3 py-2 rounded-pill"><i class="fa-solid fa-video me-1"></i> Mandatory Requirement</span>
+                        <h3 class="fw-bold mb-3">Self-Motivation Video Presentation</h3>
+                        <p class="text-muted">
+                            In this presentation, I describe my personal motivation for pursuing my degree, my passion for computing, and how I leverage technology to solve real-world problems.
+                        </p>
+                        <div class="p-3 bg-body-tertiary rounded-3 border">
+                            <small class="text-muted d-block mb-1"><strong>Key Highlights Covered:</strong></small>
+                            <span class="badge bg-secondary me-1">Degree Ambitions</span>
+                            <span class="badge bg-secondary me-1">Passion for Code</span>
+                            <span class="badge bg-secondary">Career Goals</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="ratio ratio-16x9 rounded-3 overflow-hidden shadow-sm border">
+                            <video controls poster="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=800&q=80">
+                                <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4">
+                                Your browser does not support HTML5 video elements.
+                            </video>
+                        </div>
+                        <p class="text-center text-muted fs-7 mt-2 mb-0">
+                            <i class="fa-solid fa-circle-info me-1"></i> Caption: <em>Mohamud Dahir - Degree Motivation & Aspirations Presentation</em>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Photo Grid -->
+            <div class="mb-4">
+                <h3 class="fw-bold mb-4"><i class="fa-solid fa-images text-primary me-2"></i> Photo Gallery Grid</h3>
+                <div class="row g-4">
+                    <!-- Item 1 -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="custom-card p-3 h-100">
+                            <div class="gallery-img-container mb-3" onclick="openModal('Campus Coding Challenge', 'https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=600&q=80', 'Collaborating with team members during the annual student hackathon.')">
+                                <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=600&q=80" alt="Hackathon">
+                                <div class="gallery-overlay"><i class="fa-solid fa-magnifying-glass-plus fs-2"></i></div>
+                            </div>
+                            <h5 class="fw-bold fs-6 mb-1">Campus Hackathon</h5>
+                            <p class="text-muted small mb-0">Collaborating with team members during the annual student hackathon.</p>
+                        </div>
+                    </div>
+
+                    <!-- Item 2 -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="custom-card p-3 h-100">
+                            <div class="gallery-img-container mb-3" onclick="openModal('Web Tech Workshop', 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=600&q=80', 'Presenting responsive UI frameworks at a student tech seminar.')">
+                                <img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=600&q=80" alt="Workshop">
+                                <div class="gallery-overlay"><i class="fa-solid fa-magnifying-glass-plus fs-2"></i></div>
+                            </div>
+                            <h5 class="fw-bold fs-6 mb-1">Web Tech Workshop</h5>
+                            <p class="text-muted small mb-0">Presenting responsive UI frameworks at a student tech seminar.</p>
+                        </div>
+                    </div>
+
+                    <!-- Item 3 -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="custom-card p-3 h-100">
+                            <div class="gallery-img-container mb-3" onclick="openModal('UI/UX Wireframing', 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80', 'Designing prototypes for responsive web applications.')">
+                                <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80" alt="UI Design">
+                                <div class="gallery-overlay"><i class="fa-solid fa-magnifying-glass-plus fs-2"></i></div>
+                            </div>
+                            <h5 class="fw-bold fs-6 mb-1">UI/UX Wireframing</h5>
+                            <p class="text-muted small mb-0">Designing prototypes for responsive web applications.</p>
+                        </div>
+                    </div>
+
+                    <!-- Item 4 -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="custom-card p-3 h-100">
+                            <div class="gallery-img-container mb-3" onclick="openModal('Computer Science Research Lab', 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=600&q=80', 'Conducting performance experiments in the university research lab.')">
+                                <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=600&q=80" alt="Lab Work">
+                                <div class="gallery-overlay"><i class="fa-solid fa-magnifying-glass-plus fs-2"></i></div>
+                            </div>
+                            <h5 class="fw-bold fs-6 mb-1">Research Lab</h5>
+                            <p class="text-muted small mb-0">Conducting performance experiments in the university research lab.</p>
+                        </div>
+                    </div>
+
+                    <!-- Item 5 -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="custom-card p-3 h-100">
+                            <div class="gallery-img-container mb-3" onclick="openModal('Peer Code Review', 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=600&q=80', 'Reviewing software pull requests with classmates on GitHub.')">
+                                <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=600&q=80" alt="Code Review">
+                                <div class="gallery-overlay"><i class="fa-solid fa-magnifying-glass-plus fs-2"></i></div>
+                            </div>
+                            <h5 class="fw-bold fs-6 mb-1">Peer Code Review</h5>
+                            <p class="text-muted small mb-0">Reviewing software pull requests with classmates on GitHub.</p>
+                        </div>
+                    </div>
+
+                    <!-- Item 6 -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="custom-card p-3 h-100">
+                            <div class="gallery-img-container mb-3" onclick="openModal('Annual Tech Conference', 'https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=600&q=80', 'Attending keynotes on emerging computing trends.')">
+                                <img src="https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=600&q=80" alt="Conference">
+                                <div class="gallery-overlay"><i class="fa-solid fa-magnifying-glass-plus fs-2"></i></div>
+                            </div>
+                            <h5 class="fw-bold fs-6 mb-1">Annual Tech Conference</h5>
+                            <p class="text-muted small mb-0">Attending keynotes on emerging computing trends.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PAGE 4: CONTACTS ================= -->
+        <section id="contact-page" class="page-section">
+            <div class="text-center mb-5">
+                <h2 class="display-5 fw-bold mb-2">Get In Touch</h2>
+                <p class="text-muted">Feel free to reach out for project inquiries, academic feedback, or networking.</p>
+            </div>
+
+            <div class="row g-4 mb-5">
+                <!-- Contact Details -->
+                <div class="col-lg-5">
+                    <div class="custom-card p-4 p-md-5 h-100">
+                        <h3 class="fw-bold mb-4"><i class="fa-solid fa-address-book text-primary me-2"></i> Contact Details</h3>
+                        
+                        <div class="d-flex align-items-center mb-4">
+                            <div class="bg-primary-subtle text-primary rounded-circle p-3 me-3">
+                                <i class="fa-solid fa-envelope fs-4"></i>
+                            </div>
+                            <div>
+                                <h6 class="fw-bold mb-0">University Email</h6>
+                                <a href="mailto:mohamud.dahir@university.edu" class="text-decoration-none text-muted">mohamud.dahir@university.edu</a>
+                            </div>
+                        </div>
+
+                        <div class="d-flex align-items-center mb-4">
+                            <div class="bg-success-subtle text-success rounded-circle p-3 me-3">
+                                <i class="fa-solid fa-phone fs-4"></i>
+                            </div>
+                            <div>
+                                <h6 class="fw-bold mb-0">Phone Number</h6>
+                                <p class="text-muted mb-0">+1 (555) 345-6789</p>
+                            </div>
+                        </div>
+
+                        <div class="d-flex align-items-center mb-4">
+                            <div class="bg-warning-subtle text-warning rounded-circle p-3 me-3">
+                                <i class="fa-solid fa-location-dot fs-4"></i>
+                            </div>
+                            <div>
+                                <h6 class="fw-bold mb-0">Campus Location</h6>
+                                <p class="text-muted mb-0">Engineering Building, Room 204<br>State Tech Campus</p>
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <h6 class="fw-bold mb-3">Professional Profiles</h6>
+                        <div class="d-flex gap-3">
+                            <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="btn btn-outline-dark rounded-circle px-3 py-2">
+                                <i class="fa-brands fa-github fs-5"></i>
+                            </a>
+                            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="btn btn-outline-primary rounded-circle px-3 py-2">
+                                <i class="fa-brands fa-linkedin-in fs-5"></i>
+                            </a>
+                            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" class="btn btn-outline-info rounded-circle px-3 py-2">
+                                <i class="fa-brands fa-x-twitter fs-5"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Form -->
+                <div class="col-lg-7">
+                    <div class="custom-card p-4 p-md-5">
+                        <h3 class="fw-bold mb-4"><i class="fa-solid fa-paper-plane text-primary me-2"></i> Send a Message</h3>
+                        
+                        <div id="formAlert" class="alert alert-success d-none" role="alert">
+                            <i class="fa-solid fa-circle-check me-2"></i> Thank you! Your message has been sent successfully.
+                        </div>
+
+                        <form id="portfolioContactForm">
+                            <div class="mb-3">
+                                <label for="fullName" class="form-label fw-semibold">Full Name *</label>
+                                <input type="text" class="form-control rounded-3 py-2" id="fullName" placeholder="e.g. John Doe" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="emailAddress" class="form-label fw-semibold">Email Address *</label>
+                                <input type="email" class="form-control rounded-3 py-2" id="emailAddress" placeholder="name@example.com" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="subject" class="form-label fw-semibold">Subject *</label>
+                                <input type="text" class="form-control rounded-3 py-2" id="subject" placeholder="Project Inquiry / Message" required>
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="message" class="form-label fw-semibold">Message *</label>
+                                <textarea class="form-control rounded-3 py-2" id="message" rows="4" placeholder="Write your message here..." required></textarea>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary btn-lg w-100 rounded-pill py-2">
+                                Send Message <i class="fa-solid fa-paper-plane ms-2"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Embedded Campus Map -->
+            <div class="mb-4">
+                <h3 class="fw-bold mb-3"><i class="fa-solid fa-map-location-dot text-primary me-2"></i> Campus Location Map</h3>
+                <div class="map-responsive">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.83543450937!2d144.9537353153166!3d-37.81720997975171!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad65d4c2b349649%3A0xb6899234e561db11!2sEnvato!5e0!3m2!1sen!2sus!4v1620000000000!5m2!1sen!2sus" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Modal Image Preview Lightbox -->
+    <div class="modal fade" id="galleryModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content custom-card overflow-hidden">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold" id="modalTitle">Image Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <img id="modalImg" src="" class="img-fluid rounded-3 mb-3" alt="Preview Image" style="max-height: 70vh; object-fit: contain;">
+                    <p id="modalCaption" class="text-muted small mb-0"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="py-4">
+        <div class="container">
+            <div class="row align-items-center gy-3">
+                <div class="col-md-6 text-center text-md-start">
+                    <p class="mb-0 text-muted small">&copy; 2026 Mohamud Dahir. Built with HTML5, CSS3, & Bootstrap 5.</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <div class="d-inline-flex gap-3">
+                        <a onclick="navigateTo('home-page')" class="text-muted text-decoration-none small cursor-pointer">Home</a>
+                        <a onclick="navigateTo('about-page')" class="text-muted text-decoration-none small cursor-pointer">About</a>
+                        <a onclick="navigateTo('gallery-page')" class="text-muted text-decoration-none small cursor-pointer">Gallery</a>
+                        <a onclick="navigateTo('contact-page')" class="text-muted text-decoration-none small cursor-pointer">Contact</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Tab Navigation Functionality
+        function navigateTo(pageId) {
+            document.querySelectorAll('.page-section').forEach(section => {
+                section.classList.remove('active-page');
+            });
+            
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+
+            const activeSection = document.getElementById(pageId);
+            if (activeSection) {
+                activeSection.classList.add('active-page');
+            }
+
+            const activeNavLink = document.getElementById('nav-' + pageId);
+            if (activeNavLink) {
+                activeNavLink.classList.add('active');
+            }
+
+            // Scroll smooth to top on page switch
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            // Close mobile collapsed navbar
+            const navbarCollapse = document.getElementById('navbarNav');
+            if (navbarCollapse && navbarCollapse.classList.contains('show')) {
+                const bsCollapse = bootstrap.Collapse.getInstance(navbarCollapse);
+                if (bsCollapse) bsCollapse.hide();
+            }
+        }
+
+        // Theme Toggle Logic
+        document.addEventListener('DOMContentLoaded', () => {
+            const themeToggleBtn = document.getElementById('themeToggleBtn');
+            const themeIcon = document.getElementById('themeIcon');
+            const body = document.body;
+
+            const savedTheme = localStorage.getItem('portfolioTheme') || 'light';
+            body.setAttribute('data-theme', savedTheme);
+            updateThemeIcon(savedTheme, themeIcon);
+
+            if (themeToggleBtn) {
+                themeToggleBtn.addEventListener('click', () => {
+                    const currentTheme = body.getAttribute('data-theme');
+                    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+                    
+                    body.setAttribute('data-theme', newTheme);
+                    localStorage.setItem('portfolioTheme', newTheme);
+                    updateThemeIcon(newTheme, themeIcon);
+                });
+            }
+
+            // Contact Form Logic
+            const contactForm = document.getElementById('portfolioContactForm');
+            const formAlert = document.getElementById('formAlert');
+
+            if (contactForm) {
+                contactForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    if (formAlert) {
+                        formAlert.classList.remove('d-none');
+                    }
+                    contactForm.reset();
+                    setTimeout(() => {
+                        if (formAlert) formAlert.classList.add('d-none');
+                    }, 4000);
+                });
+            }
+        });
+
+        function updateThemeIcon(theme, iconElement) {
+            if (!iconElement) return;
+            if (theme === 'dark') {
+                iconElement.classList.remove('fa-moon');
+                iconElement.classList.add('fa-sun');
+            } else {
+                iconElement.classList.remove('fa-sun');
+                iconElement.classList.add('fa-moon');
+            }
+        }
+
+        // Modal Lightbox Helper
+        function openModal(title, imgSrc, caption) {
+            const modalTitle = document.getElementById('modalTitle');
+            const modalImg = document.getElementById('modalImg');
+            const modalCaption = document.getElementById('modalCaption');
+            const galleryModal = document.getElementById('galleryModal');
+
+            if (modalTitle) modalTitle.innerText = title;
+            if (modalImg) modalImg.src = imgSrc;
+            if (modalCaption) modalCaption.innerText = caption;
+
+            if (galleryModal) {
+                const modal = new bootstrap.Modal(galleryModal);
+                modal.show();
+            }
+        }
+    </script>
+</body>
+</html>
